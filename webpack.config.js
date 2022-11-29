@@ -56,8 +56,8 @@ Encore
         config.corejs = '3.23';
     })
 
-    // enables Sass/SCSS support
-    //.enableSassLoader()
+    //enables Sass / SCSS support
+    .enableSassLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
@@ -73,16 +73,15 @@ Encore
     //.autoProvidejQuery()
     ;
 
+//supprime la dernière ligne
+// module.exports = Encore.getWebpackConfig();
+
+// et remplace par ceci
+
 const fullConfig = Encore.getWebpackConfig();
-
 fullConfig.devServer = {
-
     watchFiles: {
-
         paths: ['templates/**/*.html.twig'],
-
     },
-
 };
-
 module.exports = fullConfig;
