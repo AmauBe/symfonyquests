@@ -23,6 +23,7 @@ const CATEGORIES = [
     $category->setName($categoryName);
     $manager->persist($category);
     $this->addReference('category_' . $categoryName, $category);
+
         }
     $manager->flush();
     }
