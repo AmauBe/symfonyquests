@@ -14,16 +14,17 @@ const CATEGORIES = [
     'Animation',
     'Fantastique',
     'Horreur',
+    'Comedie',
+    'Sf',
 ];
 
     public function load(ObjectManager $manager)
     {
-        foreach (self::CATEGORIES as $categoryName){
+        foreach (self::CATEGORIES as $key => $categoryName){
     $category = new Category();
     $category->setName($categoryName);
     $manager->persist($category);
     $this->addReference('category_' . $categoryName, $category);
-
         }
     $manager->flush();
     }
