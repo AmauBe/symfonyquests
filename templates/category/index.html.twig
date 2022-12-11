@@ -7,7 +7,7 @@
 	<h1>Catégories:
 	</h1>
 	{% for category in categories %}
-		<div>
+		<div class="d-flex ms-4">
 			<h2>{{ loop.index }}
 
 				<a href="{{ path("category_show", { categoryName: category.name }) }}">{{ category.name }}</a>
@@ -15,7 +15,6 @@
 			{% else %}
 				Aucune série trouvée.
 			{% endfor %}
-
 			<a href="{{ path('app_index') }}">
 				Retour à l'accueil
 			</a>

@@ -1,14 +1,22 @@
-$primary: #0074d9;
-$danger: #e61308;
-
-$theme-colors: (
-    "danger": $danger,
-    "primary": $primary
-);
-
+$primary: #c4190d;
+$secondary: #333130;
+$third: rgb(248, 245, 245)k;
 
 body {
-    background-color: rgb(4, 36, 216);
+    background-color: #313538;
+}
+
+container-fluid {
+    color: white;
+}
+
+h1 {
+    color: red;
+}
+
+.titre {
+    height: 100vh;
+
 }
 
 @import "~bootstrap/scss/bootstrap";
