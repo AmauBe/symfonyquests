@@ -4,16 +4,21 @@
 {% endblock %}
 
 {% block body %}
-	<div class="media">
+	<div class="media d-flex justify-content-center">
 		<img class="align-self-start mr-3" src="{{program.poster}}" alt="{{ program.title }} poster">
 		<div class="media-body">
 			<h1 class="mt-0">{{ program.title }}</h1>
 			<p>{{ program.synopsis }}</p>
-			<p>Catégorie :
+			<p>Catégory :
 				{{ program.category.name }}</p>
+
+			{% for season in program.seasons %}
+				{# {{ dump(season.id) }} #}
+				<a href="{{ path("program_season_show", { programId: program.id, seasonId: season.id }) }}" class="btn btn-primary bg-info">{{ season.description }}</a>
+				<p>{{ season.year }}
+				</p>
+			{% endfor %}
+
 		</div>
 	</div>
-	<a href="{{ path('program_index') }}">
-		Retour à la liste des programmes
-	</a>
 {% endblock %}

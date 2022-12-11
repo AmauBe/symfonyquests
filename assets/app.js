@@ -11,5 +11,5 @@ require('bootstrap');
 
 // start the Stimulus application
 import './bootstrap';
-console.log('Hello Webpack encore !')
+
 

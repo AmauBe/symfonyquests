@@ -4,16 +4,18 @@
 {% endblock %}
 
 {% block body %}
-	<h1 class="mt-0">{{ category.name }}</h1>
-	{% for program in programs %}
-		<h2>
-			<a href="{{ path("program_show", { id: program.id }) }}">{{ program.title }}</a>
-		</h2>
-	{% else %}
-		Pas de séries pour cette catégorie.
-	{% endfor %}
-	<a href="{{ path('category_index') }}">
-		Retour à la liste des catégories.
-	</a>
+	<div class="category d-flex justify-content-center flex-column">
+		<h1 class="mt-0">{{ category.name }}</h1>
+		{% for program in programs %}
+			<h2>
+				<a href="{{ path("program_show", { id: program.id }) }}">{{ program.title }}</a>
+			</h2>
+		{% else %}
+			Pas de séries pour cette catégorie.
+		{% endfor %}
+		<a href="{{ path('category_index') }}">
+			Retour à la liste des catégories.
+		</a>
+	</div>
 
 {% endblock %}
