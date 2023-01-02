@@ -12,12 +12,9 @@
 			{{ season.year }}<br>
 
 			{% for episode in season.episodes %}<br>
-				{#{{ dump(episode.id) }}#}
-				<p>{{ episode.number }}.
-					{{ episode.title }}</p>
-				{#{{ dump(season.id) }}#}
 				<a href="{{ path("program_episode_show", {programId: program.id, seasonId: season.id, episodeId: episode.id }) }}">
-					Voir plus</a><br>
+					Episode n°
+					{{ episode.number }}</a><br>
 			{% endfor %}
 		</div>
 	</div>
