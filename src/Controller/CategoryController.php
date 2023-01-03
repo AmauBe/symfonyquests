@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CategoryRepository;
 use App\Repository\ProgramRepository;
 use App\Form\CategoryType;
+use App\Entity\Category;
+use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/category', name: 'category_')]
 
@@ -24,12 +26,23 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
-    public function new(): Response
-
+    public function new(Request $request, CategoryRepository $categoryRepository): Response
     {
         $category = new Category();
+
         // Create the form, linked with $category
         $form = $this->createForm(CategoryType::class, $category);
+        
+        // Get data from HTTP request
+    $form->handleRequest($request);
+    // Was the form submitted ?
+    if ($form->isSubmitted() && $form->isValid()) {
+        $categoryRepository->save($category, true);
+        // Deal with the submitted data
+        // For example : persiste & flush the entity
+        // And redirect to a route that display the result
+        return $this->redirectToRoute('category_index');
+    }
         // Render the form (best practice)
         return $this->renderForm('category/new.html.twig', [
             'form' => $form,
