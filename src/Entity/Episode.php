@@ -15,8 +15,8 @@ class Episode
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'episodes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?season $season = null;
+    #[ORM\JoinColumn(onDelete: "CASCADE", nullable: false)]
+    private ?Season $season = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
