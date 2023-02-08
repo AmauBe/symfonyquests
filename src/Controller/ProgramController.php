@@ -14,14 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/program', name: 'program_')]
 
 class ProgramController extends AbstractController
 {
     #[Route('/', methods: ['GET'], name: 'index')]
-    public function index(ProgramRepository $programRepository): Response
+    public function index(Request $request, ProgramRepository $programRepository): Response
     {
         $programs = $programRepository->findAll();
 
@@ -30,7 +30,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'new')]
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, ProgramRepository $programRepository): Response
     {
         $program = new Program();
@@ -46,10 +46,14 @@ class ProgramController extends AbstractController
         // Deal with the submitted data
         // For example : persiste & flush the entity
         // And redirect to a route that display the result
+
+        $this->addFlash('success', 'The new program has been created');
+
         return $this->redirectToRoute('program_index');
     }
         // Render the form (best practice)
         return $this->renderForm('program/new.html.twig', [
+            'program' => $program,
             'form' => $form,
         ]);
         // Alternative
