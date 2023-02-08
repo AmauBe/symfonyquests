@@ -41,6 +41,9 @@ class CategoryController extends AbstractController
         // Deal with the submitted data
         // For example : persiste & flush the entity
         // And redirect to a route that display the result
+
+        $this->addFlash('success', 'The new category has been created');
+
         return $this->redirectToRoute('category_index');
     }
         // Render the form (best practice)

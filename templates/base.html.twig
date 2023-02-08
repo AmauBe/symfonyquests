@@ -12,12 +12,24 @@
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
-	</head>
-	<body class="bg-secondary text-white">
-		{% include '_navbar.html.twig' %}
-		{% block body %}{% endblock %}
+
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
+	</head>
+	<body class="bg-secondary text-white">
+		<header>
+			{% include '_navbar.html.twig' %}
+		</header>
+		<main>
+			{% for category, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ category }}">
+						{{ message }}
+					</div>
+				{% endfor %}
+			{% endfor %}
+			{% block body %}{% endblock %}
+		</main>
 	</body>
 </html>
