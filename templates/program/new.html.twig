@@ -3,8 +3,17 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-	{{ form_start(form) }}
-	{{ form_widget(form) }}
+
+	{{ form_start(form, {'attr': {'class': 'd-flex flex-column'}}) }}
+	{{ form_row(form.title, {'attr': {'class': 'd-flex flex-column'}})}}
+	{{ form_row(form.synopsis, {'attr': {'class': 'd-flex flex-column'}})}}
+	{{ form_row(form.poster, {'attr': {'class': 'd-flex flex-column'}})}}
+	{{ form_row(form.category, {'attr': {'class': 'd-flex flex-column'}})}}
+	{{ form_row(form.country, {'attr': {'class': 'd-flex flex-column'}})}}
+	{{ form_row(form.year, {'attr': {'class': 'd-flex flex-column'}})}}
+	{{ form_row(form.actors, {'attr': {'class': 'd-flex flex-column'}})}}
+	{{ form_widget(form, {'attr': {'class': 'd-flex flex-column'}}) }}
 	<button type="submit">Add program</button>
 	{{ form_end(form) }}
+
 {% endblock %}
