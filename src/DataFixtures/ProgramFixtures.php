@@ -9,7 +9,13 @@ use Doctrine\Persistence\ObjectManager;
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {
+    private SluggerInterface $slugger;
 
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+    
         const PROGRAMS = [
             ['Title'=> 'The Walking Dead', 'Synopsis' => 'Des zombies envahissent le monde', 'Poster' => '', 'Country' => 'Etats-Unis', 'Year' => '2010', 'Category' => 'Horreur'],
             ['Title'=> 'Warrior Nun', 'Synopsis' => "Histoire d'un groupe de religieuse guerrière", 'Poster' => '', 'Country' => 'Etats-Unis', 'Year' => '2020','Category' => 'Action'],

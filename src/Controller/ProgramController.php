@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/program', name: 'program_')]
 
@@ -31,7 +32,7 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ProgramRepository $programRepository): Response
+    public function new(Request $request, ProgramRepository $programRepository, SluggerInterface $slugger): Response
     {
         $program = new Program();
 
@@ -42,6 +43,9 @@ class ProgramController extends AbstractController
     $form->handleRequest($request);
     // Was the form submitted ?
     if ($form->isSubmitted() && $form->isValid()) {
+        $slug = $slugger->slug($program->getTitle());
+        $program->setSlug($slug);
+
         $programRepository->save($program, true);
         // Deal with the submitted data
         // For example : persiste & flush the entity
