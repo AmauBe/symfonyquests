@@ -12,6 +12,25 @@
 			<p>Catégory :
 				{{ program.category.name }}</p>
 
+			<strong>Acteurs :</strong>
+			<ul>
+				{% for actor in program.actors %}
+					<li>{{ actor.name }}
+						-
+						<a href="{{ path('app_actor_show', {'id': actor.id}) }}">Voir l'acteur</a>
+					</li>
+				{% else %}
+					<li>Aucun acteur pour cette série</li>
+				{% endfor %}
+			</ul>
+			{#<ul>
+													{% for actor in program.actors %}
+														<li>{{ actor.name }}</li>
+													{% else %}
+														<li>Aucun acteur pour cette série</li>
+													{% endfor %}
+												</ul>#}
+
 			{% for season in program.seasons %}
 				{# {{ dump(season.id) }} #}
 				<a href="{{ path("program_season_show", { programId: program.id, seasonId: season.id }) }}" class="btn btn-primary bg-info">{{ season.description }}</a>
