@@ -9,6 +9,7 @@ use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
 use App\Repository\SeasonRepository;
 use App\Repository\EpisodeRepository;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -31,7 +32,7 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ProgramRepository $programRepository): Response
+    public function new(Request $request, MailerInterface $mailer, ProgramRepository $programRepository): Response
     {
         $program = new Program();
 
@@ -43,6 +44,14 @@ class ProgramController extends AbstractController
     // Was the form submitted ?
     if ($form->isSubmitted() && $form->isValid()) {
         $programRepository->save($program, true);
+
+        $email = (new Email())
+                ->from('your_email@example.com')
+                ->to('your_email@example.com')
+                ->subject('Une nouvelle série vient d\'être publiée !')
+                ->html('<p>Une nouvelle série vient d\'être publiée sur Wild Séries !</p>');
+
+        $mailer->send($email);
         // Deal with the submitted data
         // For example : persiste & flush the entity
         // And redirect to a route that display the result
