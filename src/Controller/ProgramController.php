@@ -16,6 +16,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 #[Route('/program', name: 'program_')]
 
@@ -32,7 +34,7 @@ class ProgramController extends AbstractController
     }
  // Correspond à la route /program/new et au name "program_new"
     #[Route('/new', name: 'new')]
-    public function new(Request $request, ProgramRepository $programRepository, SluggerInterface $slugger): Response
+    public function new(Request $request, MailerInterface $mailer, ProgramRepository $programRepository, SluggerInterface $slugger): Response
     {
         $program = new Program();
 
@@ -48,6 +50,14 @@ class ProgramController extends AbstractController
         $program->setSlug($slug);
 
         $programRepository->save($program, true);
+
+        $email = (new Email())
+        ->from($this->getParameter('mailer_from'))
+        ->to('your_email@example.com')
+        ->subject('Une nouvelle série vient d\'être publiée !')
+        ->html($this->renderView('program/newProgramEmail.html.twig', ['program' => $program]));
+$mailer->send($email);
+
         // Deal with the submitted data
         // For example : persiste & flush the entity
         // And redirect to a route that display the result

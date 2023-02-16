@@ -19,6 +19,7 @@ class EpisodeType extends AbstractType
             ->add('title', TextType::class)
             ->add('number', IntegerType::class)
             ->add('synopsis', TextareaType::class)
+            ->add('duration')
             ->add('season', null, ['choice_label' => 'number', 'group_by' => 'program.title'])
         ;
     }
