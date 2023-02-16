@@ -11,6 +11,28 @@
 			<p>{{ program.synopsis }}</p>
 			<p>Catégory :
 				{{ program.category.name }}</p>
+			<p>Durée totale :
+				{% if programDuration.0 != 0 %}
+					{% if programDuration.0 == 1 %}
+						{{programDuration.0}}
+						jour
+					{% else %}
+						{{programDuration.0}}
+						jours
+					{% endif %}
+				{% endif %}
+				{% if programDuration.1 != 0 %}
+					{% if programDuration.1 == 1 %}
+						{{programDuration.1}}
+						heure
+					{% else %}
+						{{programDuration.1}}
+						heures
+					{% endif %}
+				{% endif %}
+				{{programDuration.2}}
+				minutes
+			</p>
 
 			<strong>Acteurs :</strong>
 			<ul>
@@ -24,12 +46,12 @@
 				{% endfor %}
 			</ul>
 			{#<ul>
-													{% for actor in program.actors %}
-														<li>{{ actor.name }}</li>
-													{% else %}
-														<li>Aucun acteur pour cette série</li>
-													{% endfor %}
-												</ul>#}
+																																					{% for actor in program.actors %}
+																																						<li>{{ actor.name }}</li>
+																																					{% else %}
+																																						<li>Aucun acteur pour cette série</li>
+																																					{% endfor %}
+																																				</ul>#}
 
 			{% for season in program.seasons %}
 				{# {{ dump(season.id) }} #}
