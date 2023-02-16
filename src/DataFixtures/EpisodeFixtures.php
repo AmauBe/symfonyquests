@@ -5,11 +5,18 @@ namespace App\DataFixtures;
 use App\Entity\Episode;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
 class EpisodeFixtures extends Fixture implements DependentFixtureInterface
 {
+    private SluggerInterface $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
 
     public function load(ObjectManager $manager): void
     {
@@ -24,7 +31,10 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
                     $episode = new Episode();
                     $episode->setTitle($faker->words(3, true));
                     $episode->setNumber($k);
+                    $slug = $this->slugger->slug($episode->getTitle());
+            $episode->setSlug($slug);
                     $episode->setSynopsis($faker->paragraphs(1, true));
+                    $episode->setDuration($faker->numberBetween(10,60));
                     $episode->setSeason($this->getReference('program_' . $i . '_season_' . $j));
                     $manager->persist($episode);
 
@@ -36,6 +46,7 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
+                // Tu retournes ici toutes les classes de fixtures dont ProgramFixtures dépend
         return [
             SeasonFixtures::class,
         ];
