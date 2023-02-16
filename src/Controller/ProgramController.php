@@ -10,13 +10,14 @@ use App\Service\ProgramDuration;
 use App\Repository\ProgramRepository;
 use App\Repository\SeasonRepository;
 use App\Repository\EpisodeRepository;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 #[Route('/program', name: 'program_')]
 
@@ -33,7 +34,7 @@ class ProgramController extends AbstractController
     }
  // Correspond à la route /program/new et au name "program_new"
     #[Route('/new', name: 'new')]
-    public function new(Request $request, ProgramRepository $programRepository, SluggerInterface $slugger): Response
+    public function new(Request $request, MailerInterface $mailer, ProgramRepository $programRepository, SluggerInterface $slugger): Response
     {
         $program = new Program();
 
@@ -51,12 +52,12 @@ class ProgramController extends AbstractController
         $programRepository->save($program, true);
 
         $email = (new Email())
-                ->from('your_email@example.com')
-                ->to('your_email@example.com')
-                ->subject('Une nouvelle série vient d\'être publiée !')
-                ->html('<p>Une nouvelle série vient d\'être publiée sur Wild Séries !</p>');
+        ->from($this->getParameter('mailer_from'))
+        ->to('your_email@example.com')
+        ->subject('Une nouvelle série vient d\'être publiée !')
+        ->html($this->renderView('program/newProgramEmail.html.twig', ['program' => $program]));
+$mailer->send($email);
 
-        $mailer->send($email);
         // Deal with the submitted data
         // For example : persiste & flush the entity
         // And redirect to a route that display the result
