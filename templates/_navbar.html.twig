@@ -25,6 +25,20 @@
 					<a class="nav-link text-white" href="{{path('app_episode_index')}}">Liste des episodes</a>
 				</li>
 			</ul>
+
+			{% if app.user %}
+
+				{{ app.user.email }}
+
+				<a class='text-white' href="{{ path('app_logout') }}">
+					Se déconnecter</a>
+
+			{% else %}
+
+				<a class='text-white' href="{{ path('app_login') }}">
+					Se connecter</a>
+
+			{% endif %}
 		</div>
 	</div>
 </nav>
