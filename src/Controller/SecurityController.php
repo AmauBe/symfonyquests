@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Controller\SecurityController;
+namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\SecurityBundle\Security;
 
 
 class SecurityController extends AbstractController
