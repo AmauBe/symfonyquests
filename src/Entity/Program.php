@@ -56,6 +56,9 @@ class Program
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[ORM\ManyToOne(inversedBy: 'programs')]
+    private ?User $owner = null;
+
     public function __construct()
 {
     $this->programs = new ArrayCollection();
@@ -233,6 +236,18 @@ public function removeProgram(Program $program): self
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getOwner(): ?user
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?user $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }
