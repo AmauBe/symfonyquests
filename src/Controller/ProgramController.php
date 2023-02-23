@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Program;
 use App\Entity\Season;
 use App\Entity\Episode;
+use App\Entity\Comment;
 use App\Form\ProgramType;
 use App\Service\ProgramDuration;
 use App\Repository\ProgramRepository;
@@ -18,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route('/program', name: 'program_')]
 
@@ -48,7 +50,7 @@ class ProgramController extends AbstractController
 
         $slug = $slugger->slug($program->getTitle());
         $program->setSlug($slug);
-
+        $program->setOwner($this->getUser());
         $programRepository->save($program, true);
 
         $email = (new Email())
@@ -79,6 +81,11 @@ $mailer->send($email);
 #[Route('/{slug}/edit', name: 'edit', methods: ['GET', 'POST'])]
 public function edit(Request $request, Program $program, ProgramRepository $programRepository, SluggerInterface $slugger): Response
 {
+    if ($this->getUser() !== $program->getOwner()) {
+        // If not the owner, throws a 403 Access Denied exception
+        throw $this->createAccessDeniedException('Only the owner can edit the program!');
+    }
+
     $form = $this->createForm(ProgramType::class, $program);
     $form->handleRequest($request);
 
