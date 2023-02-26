@@ -15,7 +15,7 @@
 			{% if app.user %}
 				<div>
 					<a id="watchlist" href="{{ path('program_watchlist', {id: program.id})}}">
-						<i class="bigHeart bi {% if app.user and app.user.isInWatchlist(program) == true %} bi-heart-fill {% else %} bi-heart {% endif %}"></i>
+						<i class="watchlist-icons bi {{ app.user.isInWatchlist(program) ? 'bi-heart-fill' : 'bi-heart' }}" alt="watchlist"></i>
 					</a>
 				</div>
 			{% endif %}
@@ -57,12 +57,12 @@
 				{% endfor %}
 			</ul>
 			{#<ul>
-																																																										{% for actor in program.actors %}
-																																																											<li>{{ actor.name }}</li>
-																																																										{% else %}
-																																																											<li>Aucun acteur pour cette série</li>
-																																																										{% endfor %}
-																																																									</ul>#}
+																																																																{% for actor in program.actors %}
+																																																																	<li>{{ actor.name }}</li>
+																																																																{% else %}
+																																																																	<li>Aucun acteur pour cette série</li>
+																																																																{% endfor %}
+																																																															</ul>#}
 
 			{% for season in program.seasons %}
 				{# {{ dump(season.id) }} #}
