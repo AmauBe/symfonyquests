@@ -6,7 +6,10 @@ use App\Entity\Program;
 use App\Entity\Season;
 use App\Entity\Episode;
 use App\Entity\Comment;
+use App\Entity\User;
+use App\Form\CommentType;
 use App\Form\ProgramType;
+use App\Form\SearchProgramType;
 use App\Service\ProgramDuration;
 use App\Repository\ProgramRepository;
 use App\Repository\SeasonRepository;
@@ -15,6 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -26,14 +31,23 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ProgramController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(Request $request, ProgramRepository $programRepository): Response
+    public function index(Request $request, RequestStack $requestStack, ProgramRepository $programRepository): Response
     {
-        $programs = $programRepository->findAll();
-
-        return $this->render('program/index.html.twig', [
-           'programs' => $programs,
+        $form = $this->createForm(SearchProgramType::class);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $search = $form->getData()['search'];
+            $programs = $programRepository->findLikeName($search);
+        } else {
+            $programs = $programRepository->findAll();
+        }
+        return $this->renderForm('program/index.html.twig', [
+            'programs' => $programs,
+            'form' => $form,
         ]);
     }
+
  // Correspond à la route /program/new et au name "program_new"
     #[Route('/new', name: 'new')]
     public function new(Request $request, MailerInterface $mailer, ProgramRepository $programRepository, SluggerInterface $slugger): Response
