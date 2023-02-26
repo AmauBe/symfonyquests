@@ -12,6 +12,13 @@
 			{% endif %}
 
 			<h1 class="mt-0">{{ program.title }}</h1>
+			{% if app.user %}
+				<div>
+					<a id="watchlist" href="{{ path('program_watchlist', {id: program.id})}}">
+						<i class="bigHeart bi {% if app.user and app.user.isInWatchlist(program) == true %} bi-heart-fill {% else %} bi-heart {% endif %}"></i>
+					</a>
+				</div>
+			{% endif %}
 			<p>{{ program.synopsis }}</p>
 			<p>Catégory :
 				{{ program.category.name }}</p>
@@ -50,12 +57,12 @@
 				{% endfor %}
 			</ul>
 			{#<ul>
-																																											{% for actor in program.actors %}
-																																												<li>{{ actor.name }}</li>
-																																											{% else %}
-																																												<li>Aucun acteur pour cette série</li>
-																																											{% endfor %}
-																																										</ul>#}
+																																																										{% for actor in program.actors %}
+																																																											<li>{{ actor.name }}</li>
+																																																										{% else %}
+																																																											<li>Aucun acteur pour cette série</li>
+																																																										{% endfor %}
+																																																									</ul>#}
 
 			{% for season in program.seasons %}
 				{# {{ dump(season.id) }} #}

@@ -14,6 +14,7 @@ use App\Service\ProgramDuration;
 use App\Repository\ProgramRepository;
 use App\Repository\SeasonRepository;
 use App\Repository\EpisodeRepository;
+use App\Repository\CommentRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -25,6 +26,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\UserRepository;
 
 #[Route('/program', name: 'program_')]
 
@@ -212,5 +215,27 @@ public function edit(Request $request, Program $program, ProgramRepository $prog
             //'episode' => $episode,
         //]);
     //}
+
+    #[Route('/{id}/watchlist', name: 'watchlist', methods: ['GET', 'POST'])]
+public function addToWatchlist(program $program, UserRepository $userRepository): Response
+{
+    if (!$program) {
+        throw $this->createNotFoundException(
+            'No program with this id found in program\'s table.'
+        );
+    }
+
+    /** @var \App\Entity\User */
+    $user = $this->getUser();
+    if ($user->isInWatchlist($program)) {
+        $user->removeFromWatchlist($program);
+    } else {
+        $user->addToWatchlist($program);
+    }
+
+    $userRepository->save($user, true);
+
+    return $this->redirectToRoute('program_show', ['slug' => $program->getSlug()], Response::HTTP_SEE_OTHER);
+}
         }
 
